@@ -4,20 +4,23 @@ import { Course } from '../models/course';
 import { MatCardModule } from '@angular/material/card';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { CoursesService } from '../services/courses.service';
+import { Observable } from 'rxjs';
+import { HttpClientModule } from '@angular/common/http';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'app-courses',
-  imports: [MatTableModule, MatCardModule, MatToolbarModule],
+  imports: [MatTableModule, MatCardModule, MatToolbarModule, AsyncPipe],
   templateUrl: './courses.component.html',
   styleUrl: './courses.component.scss',
 })
 export class CoursesComponent implements OnInit {
-  courses: Course[] = [];
+  courses: Observable<Course[]>;
   displayedColumns = ['_id', 'name', 'category'];
 
-  constructor(private coursesService: CoursesService) {}
-
-  ngOnInit(): void {
+  constructor(private coursesService: CoursesService) {
     this.courses = this.coursesService.list();
   }
+
+  ngOnInit(): void {}
 }
