@@ -2,7 +2,7 @@
   <mat-toolbar color="primary">
     <span>Cursos Disponíveis</span>
   </mat-toolbar>
-
+  @if (courses$ | async; as courses) {
   <table mat-table [dataSource]="courses" class="mat-elevation-z8">
     <!-- Position Column -->
     <ng-container matColumnDef="_id">
@@ -25,4 +25,9 @@
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
   </table>
+  } @else {
+  <div class="loading-spinner">
+    <mat-spinner></mat-spinner>
+  </div>
+  }
 </mat-card>

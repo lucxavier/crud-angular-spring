@@ -3,5 +3,15 @@ table {
 }
 
 mat-card {
-  margin: 1rem;
+  max-width: 80%;
+  margin: 2em auto;
+  text-align: center;
+}
+
+.loading-spinner {
+  padding: 25px;
+  background: rgba(0, 0, 0, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
