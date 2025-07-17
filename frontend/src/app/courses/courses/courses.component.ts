@@ -11,6 +11,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ErrorDialogComponent } from '../../shared/components/error-dialog/error-dialog.component';
 import { MatIconModule } from '@angular/material/icon';
 import { CategoryPipe } from '../../shared/pipes/category.pipe';
+import { MatButtonModule } from '@angular/material/button';
 @Component({
   selector: 'app-courses',
   imports: [
@@ -21,13 +22,14 @@ import { CategoryPipe } from '../../shared/pipes/category.pipe';
     AsyncPipe,
     MatIconModule,
     CategoryPipe,
+    MatButtonModule,
   ],
   templateUrl: './courses.component.html',
   styleUrl: './courses.component.scss',
 })
 export class CoursesComponent implements OnInit {
   courses$: Observable<Course[]>;
-  displayedColumns = ['_id', 'name', 'category'];
+  displayedColumns = ['_id', 'name', 'category', 'actions'];
 
   constructor(
     private coursesService: CoursesService,
