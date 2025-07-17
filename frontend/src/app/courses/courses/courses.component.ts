@@ -12,6 +12,7 @@ import { ErrorDialogComponent } from '../../shared/components/error-dialog/error
 import { MatIconModule } from '@angular/material/icon';
 import { CategoryPipe } from '../../shared/pipes/category.pipe';
 import { MatButtonModule } from '@angular/material/button';
+import { ActivatedRoute, Router } from '@angular/router';
 @Component({
   selector: 'app-courses',
   imports: [
@@ -33,7 +34,9 @@ export class CoursesComponent implements OnInit {
 
   constructor(
     private coursesService: CoursesService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private router: Router,
+    private route: ActivatedRoute
   ) {
     this.courses$ = this.coursesService.list().pipe(
       catchError((error) => {
@@ -49,5 +52,9 @@ export class CoursesComponent implements OnInit {
     this.dialog.open(ErrorDialogComponent, {
       data: errorMsg,
     });
+  }
+
+  onAdd() {
+    this.router.navigate(['new'], { relativeTo: this.route });
   }
 }
