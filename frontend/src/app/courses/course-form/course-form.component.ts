@@ -1,5 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  NonNullableFormBuilder,
+  ReactiveFormsModule,
+} from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -9,8 +14,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { CoursesService } from '../services/courses.service';
 import { Course } from '../models/course';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
-import { ErrorDialogComponent } from '../../shared/components/error-dialog/error-dialog.component';
-import { MatDialog } from '@angular/material/dialog';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-course-form',
@@ -28,39 +32,39 @@ import { MatDialog } from '@angular/material/dialog';
   styleUrl: './course-form.component.scss',
 })
 export class CourseFormComponent implements OnInit {
-  form: FormGroup;
+  form!: FormGroup;
 
   constructor(
-    formBuilder: FormBuilder,
+    private formBuilder: NonNullableFormBuilder,
     private service: CoursesService,
     private snackBar: MatSnackBar,
-    private dialog: MatDialog
-  ) {
-    this.form = formBuilder.group({
-      name: [null],
-      category: [null],
+    private router: Router
+  ) {}
+
+  ngOnInit(): void {
+    this.form = this.formBuilder.group({
+      name: [''],
+      category: [''],
     });
   }
-
-  ngOnInit(): void {}
 
   onSubmit() {
     this.service.save(this.form.value as Course).subscribe({
-      next: (result) => console.log(result),
-      error: (error) => this.onError(),
+      next: () => this.onSuccess(),
+      error: () => this.onError(),
     });
   }
 
-  onCancel() {}
+  onCancel() {
+    this.router.navigate(['courses']);
+  }
 
   private onSuccess() {
-    this.snackBar.open('Course saved successfully!', '', { duration: 5000 });
+    this.snackBar.open('Curso salvo com sucesso!', '', { duration: 3000 });
     this.onCancel();
   }
 
   private onError() {
-    this.dialog.open(ErrorDialogComponent, {
-      data: 'Error saving course.',
-    });
+    this.snackBar.open('Erro ao salvar curso!', '', { duration: 3000 });
   }
 }
