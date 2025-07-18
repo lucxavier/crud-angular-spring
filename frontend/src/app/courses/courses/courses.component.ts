@@ -13,24 +13,23 @@ import { MatIconModule } from '@angular/material/icon';
 import { CategoryPipe } from '../../shared/pipes/category.pipe';
 import { MatButtonModule } from '@angular/material/button';
 import { ActivatedRoute, Router } from '@angular/router';
+import { CoursesListComponent } from '../courses-list/courses-list.component';
 @Component({
   selector: 'app-courses',
   imports: [
-    MatTableModule,
     MatCardModule,
     MatToolbarModule,
     MatProgressSpinnerModule,
     AsyncPipe,
     MatIconModule,
-    CategoryPipe,
     MatButtonModule,
+    CoursesListComponent,
   ],
   templateUrl: './courses.component.html',
   styleUrl: './courses.component.scss',
 })
 export class CoursesComponent implements OnInit {
   courses$: Observable<Course[]>;
-  displayedColumns = ['_id', 'name', 'category', 'actions'];
 
   constructor(
     private coursesService: CoursesService,
@@ -52,9 +51,5 @@ export class CoursesComponent implements OnInit {
     this.dialog.open(ErrorDialogComponent, {
       data: errorMsg,
     });
-  }
-
-  onAdd() {
-    this.router.navigate(['new'], { relativeTo: this.route });
   }
 }
