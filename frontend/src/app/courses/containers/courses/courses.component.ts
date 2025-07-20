@@ -1,19 +1,15 @@
 import { Component, OnInit } from '@angular/core';
-import { MatTableModule } from '@angular/material/table';
-import { Course } from '../models/course';
+import { Course } from '../../models/course';
 import { MatCardModule } from '@angular/material/card';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { CoursesService } from '../services/courses.service';
+import { CoursesService } from '../../services/courses.service';
 import { catchError, Observable, of } from 'rxjs';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { AsyncPipe } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
-import { ErrorDialogComponent } from '../../shared/components/error-dialog/error-dialog.component';
-import { MatIconModule } from '@angular/material/icon';
-import { CategoryPipe } from '../../shared/pipes/category.pipe';
-import { MatButtonModule } from '@angular/material/button';
+import { ErrorDialogComponent } from '../../../shared/components/error-dialog/error-dialog.component';
 import { ActivatedRoute, Router } from '@angular/router';
-import { CoursesListComponent } from '../courses-list/courses-list.component';
+import { CoursesListComponent } from '../../components/courses-list/courses-list.component';
 @Component({
   selector: 'app-courses',
   imports: [
@@ -21,8 +17,6 @@ import { CoursesListComponent } from '../courses-list/courses-list.component';
     MatToolbarModule,
     MatProgressSpinnerModule,
     AsyncPipe,
-    MatIconModule,
-    MatButtonModule,
     CoursesListComponent,
   ],
   templateUrl: './courses.component.html',
@@ -51,5 +45,9 @@ export class CoursesComponent implements OnInit {
     this.dialog.open(ErrorDialogComponent, {
       data: errorMsg,
     });
+  }
+
+  onAdd() {
+    this.router.navigate(['new'], { relativeTo: this.route });
   }
 }

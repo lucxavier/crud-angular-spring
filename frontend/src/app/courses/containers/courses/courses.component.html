@@ -6,7 +6,7 @@
   <div class="column-flex mat-elevation-z8">
     @if (courses$ | async; as courses) {
 
-    <app-courses-list [courses]="courses"></app-courses-list>
+    <app-courses-list [courses]="courses" (add)="onAdd()"></app-courses-list>
 
     } @else {
 
