@@ -14,6 +14,7 @@ import { MatButtonModule } from '@angular/material/button';
 export class CoursesListComponent {
   @Input() courses: Course[] = [];
   @Output() add = new EventEmitter(false);
+  @Output() edit = new EventEmitter(false);
 
   readonly displayedColumns = ['_id', 'name', 'category', 'actions'];
 
@@ -21,5 +22,9 @@ export class CoursesListComponent {
 
   onAdd() {
     this.add.emit(true);
+  }
+
+  onEdit(element: Course) {
+    this.edit.emit(element);
   }
 }
