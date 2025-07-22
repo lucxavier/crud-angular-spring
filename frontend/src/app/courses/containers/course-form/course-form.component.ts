@@ -4,6 +4,7 @@ import {
   FormGroup,
   NonNullableFormBuilder,
   ReactiveFormsModule,
+  Validators,
 } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -15,6 +16,7 @@ import { CoursesService } from '../../services/courses.service';
 import { Course } from '../../models/course';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
+import { FormUtilsService } from '../../../shared/services/form-utils.service';
 
 @Component({
   selector: 'app-course-form',
@@ -39,14 +41,22 @@ export class CourseFormComponent implements OnInit {
     private service: CoursesService,
     private snackBar: MatSnackBar,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    public formUtils: FormUtilsService
   ) {}
 
   ngOnInit(): void {
     this.form = this.formBuilder.group({
       _id: [''],
-      name: [''],
-      category: [''],
+      name: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(5),
+          Validators.maxLength(100),
+        ],
+      ],
+      category: ['', [Validators.required]],
     });
 
     const course: Course = this.route.snapshot.data['course'];
@@ -77,5 +87,9 @@ export class CourseFormComponent implements OnInit {
 
   private onError() {
     this.snackBar.open('Erro ao salvar curso!', '', { duration: 3000 });
+  }
+
+  getErrorMessage(fieldName: string): string {
+    return this.formUtils.getFieldErrorMessage(this.form, fieldName);
   }
 }
