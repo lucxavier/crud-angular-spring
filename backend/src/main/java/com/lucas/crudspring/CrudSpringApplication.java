@@ -12,7 +12,7 @@ import com.lucas.model.Course;
 import com.lucas.repository.CourseRepository;
 
 @SpringBootApplication
-@ComponentScan(basePackages = {"com.lucas.controller", "com.lucas.repository"}) // Or just {"com.lucas"}
+@ComponentScan(basePackages = {"com.lucas.controller", "com.lucas.repository"})
 @EnableJpaRepositories(basePackages = "com.lucas.repository")
 @EntityScan(basePackages = "com.lucas.model")
 public class CrudSpringApplication {
@@ -28,7 +28,7 @@ public class CrudSpringApplication {
 			
 			Course c = new Course();
 			c.setName("Angular");
-			c.setCategory("front-end");
+			c.setCategory("Front-end");
 
 			courseRepository.save(c);
 		};
