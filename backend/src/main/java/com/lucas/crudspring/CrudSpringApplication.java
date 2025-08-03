@@ -5,14 +5,12 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 import com.lucas.model.Course;
 import com.lucas.repository.CourseRepository;
 
-@SpringBootApplication
-@ComponentScan(basePackages = {"com.lucas.controller", "com.lucas.repository"})
+@SpringBootApplication(scanBasePackages = "com.lucas")
 @EnableJpaRepositories(basePackages = "com.lucas.repository")
 @EntityScan(basePackages = "com.lucas.model")
 public class CrudSpringApplication {

@@ -16,54 +16,55 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.lucas.model.Course;
-import com.lucas.repository.CourseRepository;
+import com.lucas.service.CourseService;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
-import lombok.AllArgsConstructor;
 
 @Validated
 @RestController
 @RequestMapping("/api/courses")
-@AllArgsConstructor
 public class CourseController {
 
-  private final CourseRepository courseRepository;
+  private final CourseService courseService;
+
+  public CourseController(CourseService courseService) {
+    this.courseService = courseService;
+  }
+
 
   @GetMapping
   public List<Course> list() {
-    return courseRepository.findAll();
+    return courseService.list();
   }
 
   @GetMapping("/{id}")
   public ResponseEntity<Course> findById(@PathVariable @NotNull @Positive Long id) {
-    return ResponseEntity.of(courseRepository.findById(id));
+    return courseService.findById(id)
+        .map(recordFound -> ResponseEntity.ok().body(recordFound))
+        .orElse(ResponseEntity.notFound().build());
   }
 
   @PostMapping
   @ResponseStatus(code = HttpStatus.CREATED)
   public Course create (@RequestBody @Valid Course course){
-    return courseRepository.save(course);
+    return courseService.create(course);
   }
 
   @PutMapping("/{id}")
   public ResponseEntity<Course> update(@PathVariable @NotNull @Positive Long id, @RequestBody @Valid Course course) {
-    return ResponseEntity.of(courseRepository.findById(id)
-        .map(existingCourse -> {
-          existingCourse.setName(course.getName());
-          existingCourse.setCategory(course.getCategory());
-          return courseRepository.save(existingCourse);
-        }));
+    return courseService.update(id, course)
+        .map(existingCourse -> ResponseEntity.ok().body(existingCourse))
+        .orElse(ResponseEntity.notFound().build());
   }
 
   @DeleteMapping("/{id}")
   public ResponseEntity<Void> delete(@PathVariable @NotNull @Positive Long id) {
-    return courseRepository.findById(id)
-        .map(_ -> {
-          courseRepository.deleteById(id);
-          return ResponseEntity.noContent().<Void>build();
-        })
-        .orElse(ResponseEntity.notFound().build());
+    if(courseService.delete(id)){
+      return ResponseEntity.noContent().<Void>build();
+    } else {
+      return ResponseEntity.notFound().build();
+    }
   }
 }
